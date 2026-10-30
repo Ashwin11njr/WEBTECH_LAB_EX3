@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LaunchPad | Founder Task Tracker</title>
+
+    <!-- Internal CSS: LaunchPad theme (emerald & sky) -->
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 100%);
+            color: #1e293b;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 850px;
+            margin: auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid #bae6fd;
+            box-shadow: 0 10px 25px rgba(14, 165, 233, 0.15);
+        }
+        h1 { color: #0284c7; text-align: center; font-size: 2.2rem; margin: 0 0 5px; }
+        .tagline { text-align: center; color: #059669; font-weight: 600; margin-bottom: 20px; }
+        h2 { color: #059669; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px; }
+        nav { text-align: center; background: #0284c7; padding: 12px; border-radius: 8px; margin: 15px 0; }
+        nav a { color: #fff; font-weight: bold; text-decoration: none; margin: 0 10px; }
+        nav a:hover { color: #a7f3d0; }
+
+        .card { background: #f8fafc; padding: 20px; border-radius: 12px; margin-top: 20px;
+                border-left: 5px solid #0284c7; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+
+        /* Feature cards: one per group of functions */
+        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
+        .feature { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; }
+        .feature h3 { margin: 0 0 6px; color: #0284c7; }
+        .feature p { margin: 0 0 10px; font-size: .92rem; color: #475569; }
+        .tag { display: inline-block; background: #d1fae5; color: #047857; border-radius: 6px;
+               padding: 2px 8px; font-size: .8rem; font-family: Consolas, monospace; margin: 2px 2px 0 0; }
+
+        /* Task tracker */
+        #taskForm { display: flex; gap: 10px; }
+        #taskInput { flex: 1; padding: 11px; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 1rem; }
+        #taskInput:focus { outline: none; border-color: #059669; box-shadow: 0 0 0 3px #a7f3d0; }
+        button { cursor: pointer; font-family: inherit; }
+        #taskForm button { background: #059669; color: #fff; border: none; border-radius: 8px;
+                           padding: 0 22px; font-weight: bold; font-size: 1rem; }
+        #taskForm button:hover { background: #047857; }
+
+        .filters { margin: 16px 0 6px; display: flex; gap: 8px; }
+        .filters button { background: #fff; border: 1px solid #cbd5e1; border-radius: 20px;
+                          padding: 6px 16px; font-weight: 600; color: #334155; }
+        .filters button.active { background: #0284c7; border-color: #0284c7; color: #fff; }
+
+        #taskList { list-style: none; padding: 0; margin: 10px 0; }
+        #taskList li { display: flex; align-items: center; gap: 12px; background: #fff;
+                       border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 14px; margin-bottom: 8px; }
+        #taskList li span { flex: 1; }
+        #taskList li.done span { text-decoration: line-through; color: #94a3b8; }
+        #taskList li input { width: 18px; height: 18px; accent-color: #059669; cursor: pointer; }
+        .del { background: #fee2e2; color: #b91c1c; border: none; border-radius: 6px; padding: 5px 10px; font-weight: bold; }
+        .del:hover { background: #fecaca; }
+        .empty { justify-content: center; color: #94a3b8; }
+        #counter { font-weight: 700; color: #059669; margin: 8px 0 0; }
+
+        footer { text-align: center; color: #64748b; margin-top: 24px; font-size: .9rem; }
+        @media (max-width: 560px) { #taskForm { flex-direction: column; } #taskForm button { padding: 11px; } }
+    </style>
+</head>
+<body id="top">
+<div class="container">
+
+    <!-- Header -->
+    <header>
+        <h1>🚀 LaunchPad Founder Tracker</h1>
+        <p class="tagline">Plan your startup roadmap, one small task at a time</p>
+    </header>
+
+    <nav>
+        <a href="#about">About</a> |
+        <a href="#tracker">Task Tracker</a> |
+        <a href="#how">How It Works</a>
+    </nav>
+
+    <!-- About: feature cards map each feature to its functions -->
+    <div id="about" class="card">
+        <h2>Built with JavaScript Functions</h2>
+        <p>Every feature of this app is a small function. The page simply calls them.</p>
+        <div class="features">
+            <div class="feature">
+                <h3>Add a task</h3>
+                <p>Type a milestone, press Enter, see it listed.</p>
+                <span class="tag">addTask()</span><span class="tag">createTask()</span>
+            </div>
+            <div class="feature">
+                <h3>Complete or delete</h3>
+                <p>Tick a task off or remove it for good.</p>
+                <span class="tag">toggleTask()</span><span class="tag">deleteTask()</span>
+            </div>
+            <div class="feature">
+                <h3>Filter the list</h3>
+                <p>Show all, open or finished tasks.</p>
+                <span class="tag">getVisible()</span><span class="tag">renderTasks()</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tracker: empty placeholders filled in by JavaScript -->
+    <div id="tracker" class="card" style="border-left-color:#059669;">
+        <h2>Startup Launch Checklist</h2>
+
+        <form id="taskForm">
+            <input id="taskInput" type="text" placeholder="e.g. Build the MVP landing page" autocomplete="off">
+            <button type="submit">Add</button>
+        </form>
+
+        <div class="filters">
+            <button type="button" data-filter="all" class="active">All</button>
+            <button type="button" data-filter="open">Open</button>
+            <button type="button" data-filter="done">Finished</button>
+        </div>
+
+        <ul id="taskList"></ul>
+        <p id="counter"></p>
+    </div>
+
+    <div id="how" class="card" style="border-left-color:#d97706;">
+        <h2>How It Works</h2>
+        <ol>
+            <li>State: the <code>tasks</code> array and the current <code>filter</code></li>
+            <li>Functions: create, toggle, delete and filter the tasks</li>
+            <li>Screen: <code>renderTasks()</code> redraws the list after every change</li>
+        </ol>
+    </div>
+
+    <footer>&copy; 2026 LaunchPad Startup Hub &middot; <a href="#top">Back to Top ↑</a></footer>
+</div>
+
+<script>
+    /* ---------- State ---------- */
+    const SEED = [
+        { id: 1, text: "Validate the idea with 10 user interviews",    done: true  },
+        { id: 2, text: "Design the MVP wireframes",                    done: false },
+        { id: 3, text: "Register the company and open a bank account", done: false },
+        { id: 4, text: "Prepare the investor pitch deck",              done: false }
+    ];
+    let tasks  = loadTasks();     // array of task objects
+    let filter = "all";           // "all" | "open" | "done"
+
+    /* ---------- DOM references ---------- */
+    const form    = document.getElementById("taskForm");
+    const input   = document.getElementById("taskInput");
+    const list    = document.getElementById("taskList");
+    const counter = document.getElementById("counter");
+
+    /* ---------- Functions that change the tasks ---------- */
+    function createTask(text) {                 // returns a new task object
+        return { id: Date.now(), text: text, done: false };
+    }
+    function addTask(text) {
+        tasks.push(createTask(text));
+        saveAndRender();
+    }
+    function toggleTask(id) {
+        tasks = tasks.map(t => t.id === id ? { ...t, done: !t.done } : t);
+        saveAndRender();
+    }
+    function deleteTask(id) {
+        tasks = tasks.filter(t => t.id !== id);
+        saveAndRender();
+    }
+    function setFilter(name) {
+        filter = name;
+        document.querySelectorAll(".filters button").forEach(b =>
+            b.classList.toggle("active", b.dataset.filter === name));
+        renderTasks();
+    }
+
+    /* ---------- Storage helpers ---------- */
+    function loadTasks() {
+        try { return JSON.parse(localStorage.getItem("tasks")) || SEED; }
+        catch (e) { return SEED; }
+    }
+    function saveAndRender() {                  // every updater ends the same way
+        try { localStorage.setItem("tasks", JSON.stringify(tasks)); } catch (e) {}
+        renderTasks();
+    }
+
+    /* ---------- Drawing the screen with functions ---------- */
+    function getVisible() {                     // applies the current filter
+        if (filter === "open") return tasks.filter(t => !t.done);
+        if (filter === "done") return tasks.filter(t => t.done);
+        return tasks;
+    }
+    function countOpen() {
+        return tasks.filter(t => !t.done).length;
+    }
+    function taskItem(t) {                      // builds one list row
+        const li = document.createElement("li");
+        if (t.done) li.classList.add("done");
+
+        const box = document.createElement("input");
+        box.type = "checkbox";
+        box.checked = t.done;
+        box.addEventListener("change", () => toggleTask(t.id));
+
+        const label = document.createElement("span");
+        label.textContent = t.text;
+
+        const del = document.createElement("button");
+        del.className = "del";
+        del.textContent = "Delete";
+        del.addEventListener("click", () => deleteTask(t.id));
+
+        li.append(box, label, del);
+        return li;
+    }
+    function renderTasks() {
+        list.innerHTML = "";
+        const visible = getVisible();
+        if (visible.length === 0) {
+            list.innerHTML = '<li class="empty">No tasks to show.</li>';
+        }
+        visible.forEach(t => {
+            list.appendChild(taskItem(t));
+        });
+        counter.textContent = countOpen() + " left";
+    }
+
+    /* ---------- Connecting the page to the functions ---------- */
+    function handleSubmit(event) {
+        event.preventDefault();                 // stop the page reloading
+        const text = input.value.trim();
+        if (text !== "") {
+            addTask(text);
+        }
+        input.value = "";
+    }
+    form.addEventListener("submit", handleSubmit);   // passed, not called
+    document.querySelectorAll(".filters button").forEach(b =>
+        b.addEventListener("click", () => setFilter(b.dataset.filter)));
+
+    /* ---------- Start with a render ---------- */
+    renderTasks();
+</script>
+</body>
+</html>
